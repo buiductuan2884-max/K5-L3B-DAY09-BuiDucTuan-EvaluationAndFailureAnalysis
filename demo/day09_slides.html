@@ -270,19 +270,6 @@ ul.big { margin: 0; padding-left: 26px; display: grid; gap: 14px; font-size: 22p
   <p class="muted" style="font-size:16px">Ngoài 4 trap công khai, gate còn chặn: dòng trùng thay cho dòng fail, <code>evaluator_failures</code> trên run xanh, ô NaN trong rows, metric sửa tay khác số tính lại, đổi tên eval-set version để né ratchet.</p>
 </section>
 
-<section class="slide" data-name="ci">
-  <span class="eyebrow">Tự phát hiện khi review · tái lập trên máy chấm</span>
-  <h2>Xanh trên máy, đỏ trên CI</h2>
-  <p class="sub">Gate so mã sha của eval set để chắc PR và baseline chấm trên cùng bộ câu hỏi. Cùng một file, hai máy ra hai mã.</p>
-  <div class="split" style="margin-top:6px">
-    <div class="pane" style="padding-bottom:48px"><span class="who">Máy Windows · autocrlf</span><span style="font-size:19px">xuống dòng <b>CRLF</b>, baseline ghi mã này</span><span class="amount bad" style="font-size:36px">6bb4370e95a2</span></div>
-    <div class="pane" style="padding-bottom:48px"><span class="who">GitHub CI · Linux</span><span style="font-size:19px">checkout ra <b>LF</b> (<code>.gitattributes eol=lf</code>)</span><span class="amount good" style="font-size:36px">3ff09364d394</span></div>
-    <span class="stamp">EVAL SET differs → chặn mọi PR</span>
-  </div>
-  <div class="card" style="margin-top:24px"><span class="who">Sửa</span>
-    <p style="font-size:19px"><code>evalset.py</code> luôn ghi <code>newline="\n"</code>, sinh lại toàn bộ report bằng script. sha trên máy bằng sha trên CI; PR có 15/15 check xanh, gồm <code>eval-gate</code> và <code>eval-gate-v2</code>.</p></div>
-</section>
-
 <section class="slide" data-name="ket-luan">
   <span class="eyebrow">Kết luận</span>
   <h2>Bốn điều rút ra</h2>
