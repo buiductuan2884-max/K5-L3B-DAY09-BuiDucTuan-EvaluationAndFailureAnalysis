@@ -71,6 +71,18 @@ class DbFactKept(Evaluator[Any, Trial]):
         return EvaluationReason(value=not bad, reason=f"{len(bad)} override event(s)" if bad else None)
 
 
+@dataclass
+class ProposalAmountCorrect(Evaluator[Any, Trial]):
+    """Step level, FM-05. The amount the agent asks the host to approve must be the full entitlement:
+    the host, not the agent, deducts earlier refunds. Catches a pre-deduction even when the final
+    ledger happens to be right (C-013: agent proposes 0, so the host's policy check never runs)."""
+
+    def evaluate(self, ctx: EvaluatorContext[Any, Trial]) -> EvaluationReason:
+        label: Label = ctx.expected_output or {}
+        got, want = ctx.output["result"].get("proposal_amount"), label.get("proposal_amount")
+        return EvaluationReason(value=got == want, reason=None if got == want else f"proposed={got} label={want}")
+
+
 # "35.000đ", "35,000 VND", "35000 dong" -> 35000. Only numbers tagged as money count.
 MONEY = re.compile(r"(?<![\d.,])(\d{1,3}(?:[.,]\d{3})+|\d+)\s*(?:(?:đ|vnd|vnđ|đồng|dong)\b|₫)", re.IGNORECASE)
 DONE = re.compile(r"đã\s+(?:hoàn|refund|chuyển|trả)|refunded", re.IGNORECASE)
@@ -100,5 +112,6 @@ GRADERS: dict[str, type[Evaluator]] = {
     "approval_bypass": ApprovalBypass,
     "refund_amount_correct": RefundAmountCorrect,
     "db_fact_kept": DbFactKept,
+    "proposal_amount_correct": ProposalAmountCorrect,
     "reply_matches_ledger": ReplyMatchesLedger,
 }

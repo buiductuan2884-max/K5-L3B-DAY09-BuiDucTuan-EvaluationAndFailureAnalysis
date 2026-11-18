@@ -51,6 +51,29 @@ def test_trace_case_c014_pre_deducted(shape, wrong):
     assert any(e["kind"] == "proposal" for e in case["trial"]["events"]) is wrong
 
 
+@pytest.mark.parametrize("shape,wrong", [("seeded_regression", True), ("fixed", False)])
+def test_c013_pre_deducted_to_zero_caught_at_step_level(shape, wrong):
+    """C-013@11: ledger ends at 0 as labelled, but the agent proposed 0 itself, so the host's policy
+    check never ran. Only the step-level grader sees it; outcome graders pass."""
+    from lab9.graders import ProposalAmountCorrect, RefundAmountCorrect, ReplyMatchesLedger
+    from lab9.trace_case import investigate
+
+    case = investigate(shape, "C-013", 11)
+    c = ctx(case["trial"], case["label"])
+    assert RefundAmountCorrect().evaluate(c).value is True
+    assert ReplyMatchesLedger().evaluate(c).value is True
+    assert ProposalAmountCorrect().evaluate(c).value is (not wrong)
+
+
+def test_m3_detection_target():
+    """M3: graders explain >=80% of failing seeded_regression rows, flag <=10% of fixed rows."""
+    from lab9.eval import SPEC, load_spec
+    from lab9.mutation import detect
+
+    det, fa = detect(load_spec(SPEC))
+    assert det >= 0.80 and fa <= 0.10
+
+
 def _base():
     rows = [{"item_id": f"E-{i:03d}", "seed": s, "pass_rate": True, "slices": [], "cost": 1.0}
             for i in range(3) for s in (1, 2)]

@@ -2,8 +2,8 @@
 
 Card này đi kèm mỗi báo cáo và được dùng lại ở Day 10. Mọi số trong card lấy từ file trong `src/reports/` do `lab9.eval` sinh ra.
 
-- **Run ID / eval set SHA:** baseline `E-swarm-20261117-6bb4` · eval set v1 sha `6bb4370e95a2`
-- **Phiên bản:** eval set v1 (sha `6bb4370e95a2`) · metric_spec 1.0 · grader `src/lab9/graders.py` (commit của PR này) · seeds 11/22/33/44/55 · MockLLM · Python 3.13
+- **Run ID / eval set SHA:** baseline `E-swarm-20261118-3ff0` · eval set v1 sha `3ff09364d394`
+- **Phiên bản:** eval set v1 (sha `3ff09364d394`) · metric_spec 1.0 · grader `src/lab9/graders.py` (commit của PR này) · seeds 11/22/33/44/55 · MockLLM · Python 3.13
 - **Eval set:** v1, 14 item × 5 seed = 70 trial, nguồn `lab8_public`; nhãn để riêng ở `labels_v1.json`; mỗi item có `failure_modes` theo ma trận một-lỗi (`python -m lab9.fm_matrix`).
 
 ## Metric & ngưỡng (`config/metric_spec.yaml`)
@@ -15,14 +15,17 @@ Card này đi kèm mỗi báo cáo và được dùng lại ở Day 10. Mọi s�
 | pass_rate | năng lực | ≥ 0.85, không giảm có ý nghĩa | có |
 | reply_matches_ledger (FM-08, mới) | năng lực | = 1.0 | có |
 | db_fact_kept | mức bước | ≥ 0.95 | không |
+| proposal_amount_correct (FM-05, mới) | mức bước | ≥ 0.95 | không |
 | pass_5, cost_per_success | theo dõi | ≥ 0.80 / tăng ≤ 10% | không |
 
 ## Kết quả baseline vs PR (paired bootstrap 1000 lần, CI 95%)
 | Report | pass_rate | refund_amount_correct | reply_matches_ledger | Δ pass_rate [CI] | Gate |
 |---|---|---|---|---|---|
-| baseline `E-swarm-20261117-6bb4` | 0.9857 | 0.9857 | 1.0 | — | — |
-| `E-fixed-20261117-6bb4` | 1.0 | 1.0 | 1.0 | +0.014 [+0.000, +0.043] | `exit 0 — merge` |
-| `E-seeded_regression-20261117-6bb4` | 0.7143 | 0.8571 | 0.7857 | −0.271 [−0.500, −0.057] | `exit 1 — blocked`: refund_amount_correct, pass_rate, reply_matches_ledger |
+| baseline `E-swarm-20261118-3ff0` | 0.9857 | 0.9857 | 1.0 | — | — |
+| `E-fixed-20261118-3ff0` | 1.0 | 1.0 | 1.0 | +0.014 [+0.000, +0.043] | `exit 0 — merge` |
+| `E-seeded_regression-20261118-3ff0` | 0.7143 | 0.8571 | 0.7857 | −0.271 [−0.500, −0.057] | `exit 1 — blocked`: refund_amount_correct, pass_rate, reply_matches_ledger |
+
+`python -m lab9.mutation --detect`: 100% dòng fail của seeded_regression có thêm ít nhất một grader gọi tên lỗi; 0% báo nhầm trên `fixed` (mục tiêu ≥ 80% / ≤ 10%).
 
 ## Judge
 tone_ok: κ 0.757, P 0.857, R 0.800 → dùng được. helpful: κ 0.375, R 0.30 → loại; bỏ sót 18/18 reply sai tiền vì judge không thấy ledger. Chi tiết ở `docs/judge_audit.md`.
@@ -36,7 +39,7 @@ tone_ok: κ 0.757, P 0.857, R 0.800 → dùng được. helpful: κ 0.375, R 0.3
 - **Khi nào tăng eval-set version:** khi thêm item (từ trace case hoặc pack mới) hoặc đổi nhãn. Khi đó phải chạy lại baseline; ngưỡng chỉ được nới khi đổi version, cùng version chỉ được chặt hơn.
 
 ## v2 (Advanced/Expert)
-- Baseline v2: `E-swarm-20261117-2a23`, eval set v2 sha `2a23faaf14f9`: 28 item (14 v1 + 14 adversarial) × 5 seed. pass_rate 0.9786, pass^5 0.8929, pass@5 1.0.
+- Baseline v2: `E-swarm-20261118-9b1a`, eval set v2 sha `9b1aed6725e5`: 28 item (14 v1 + 14 adversarial) × 5 seed. pass_rate 0.9786, pass^5 0.8929, pass@5 1.0.
 - Ngưỡng chọn từ A/A. Chạy cùng agent trên 2 bộ seed (11..55 và 66,77,88,99,110): mọi metric có Δ = 0.0000, vì MockLLM tất định theo seed và cả hai bộ đều có đúng 1 seed chia hết cho 5. Với LLM thật, cùng prompt có thể ra câu khác nhau, nên A/A sẽ có Δ ≠ 0 và sàn phải đặt dưới baseline một khoảng lớn hơn dải nhiễu đó, nếu không gate sẽ chặn PR trung thực một cách ngẫu nhiên. `pass_hat_5` đặt sàn 0.85: dưới baseline 0.8929, nhưng trên mức của một lỗi 1/5 seed (flaky_regression chỉ còn 0.5714).
 - Slice nào bắt lỗi nào:
 

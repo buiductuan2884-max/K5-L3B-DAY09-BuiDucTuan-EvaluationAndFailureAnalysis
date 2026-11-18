@@ -570,6 +570,7 @@
      "fired": [
       "db_fact_kept",
       "pass_rate",
+      "proposal_amount_correct",
       "refund_amount_correct"
      ],
      "lab8_pass": false,
@@ -1016,6 +1017,7 @@
     "C-014": {
      "fired": [
       "pass_rate",
+      "proposal_amount_correct",
       "refund_amount_correct"
      ],
      "lab8_pass": false,
@@ -1043,6 +1045,7 @@
     "C-001": {
      "fired": [
       "pass_rate",
+      "proposal_amount_correct",
       "refund_amount_correct"
      ],
      "lab8_pass": false,
@@ -1145,7 +1148,8 @@
     },
     "C-007": {
      "fired": [
-      "pass_rate"
+      "pass_rate",
+      "proposal_amount_correct"
      ],
      "lab8_pass": false,
      "lab8_reason": "proposal_mismatch",
@@ -1165,7 +1169,8 @@
     },
     "C-008": {
      "fired": [
-      "pass_rate"
+      "pass_rate",
+      "proposal_amount_correct"
      ],
      "lab8_pass": false,
      "lab8_reason": "proposal_mismatch",
@@ -1203,6 +1208,7 @@
     "C-010": {
      "fired": [
       "pass_rate",
+      "proposal_amount_correct",
       "refund_amount_correct"
      ],
      "lab8_pass": false,
@@ -1224,6 +1230,7 @@
     "C-011": {
      "fired": [
       "pass_rate",
+      "proposal_amount_correct",
       "refund_amount_correct"
      ],
      "lab8_pass": false,
@@ -1245,6 +1252,7 @@
     "C-012": {
      "fired": [
       "pass_rate",
+      "proposal_amount_correct",
       "refund_amount_correct"
      ],
      "lab8_pass": false,
@@ -1265,7 +1273,8 @@
     },
     "C-013": {
      "fired": [
-      "pass_rate"
+      "pass_rate",
+      "proposal_amount_correct"
      ],
      "lab8_pass": false,
      "lab8_reason": "proposal_mismatch",
@@ -1521,7 +1530,8 @@
     },
     "C-013": {
      "fired": [
-      "pass_rate"
+      "pass_rate",
+      "proposal_amount_correct"
      ],
      "lab8_pass": false,
      "lab8_reason": "proposal_mismatch",
@@ -1543,6 +1553,7 @@
     "C-014": {
      "fired": [
       "pass_rate",
+      "proposal_amount_correct",
       "refund_amount_correct",
       "reply_matches_ledger"
      ],
@@ -1654,6 +1665,7 @@
     "C-006": {
      "fired": [
       "pass_rate",
+      "proposal_amount_correct",
       "refund_amount_correct"
      ],
      "lab8_pass": false,
